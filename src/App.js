@@ -22,6 +22,37 @@ const App = () => {
     },
   ];
 
+  /**
+   * A callback handler to be used in the Search component but calls back here
+   * @param {Event} event onChange event
+   */
+  const handleSearch = event => {
+    console.log('onSearch event triggered', event.target.value)
+  }
+
+  return (
+    <div>
+      <h1>My Hacker Stories</h1>
+
+      <img src={logo} className="App-logo" alt="logo" />
+
+      {/* Search component; Send callback function to component using onSearch event */}
+      <Search onSearch={handleSearch}/>
+
+      <hr />
+
+      {/* Use props to send variables from App component to List component */}
+      <List list={stories} />
+    </div>
+  );
+}
+
+/**
+ * Search component
+ * @param {Object} props.onSearch Callback function to communicate with App component
+ */
+const Search = props => {
+  console.log('Search.props', props)
   // useState hook takes initial state as argument, then returns two values
   // ret[0] = current state
   // ret[1] = function to update state
@@ -34,44 +65,27 @@ const App = () => {
    */
   const handleChange = event => {
     setSearchTerm(event.target.value)
+    // callback to App component 
+    props.onSearch(event)
     console.log(event.timeStamp, event.target.value, event.type);
-  }
-
-  const handleChangeKey = event => {
-    console.log(event.key)
-  }
-
-  const [count, setCount] = React.useState(0);
-
-  const handleCount = event => {
-    setCount(count + 1);
   }
 
   return (
     <div>
-      <h1>My Hacker Stories</h1>
-
-      <img src={logo} className="App-logo" alt="logo" />
-
       <fieldset>
         <label htmlFor="search">Search: </label>
-        <input id="search" type="text" onChange={handleChange} onKeyDown={handleChangeKey} />
-        <button onClick={handleCount}>+1</button> <span>{count}</span>
+        <input id="search" type="text" onChange={handleChange} />
       </fieldset>
-
+      
       <p>Searching for <em>{searchTerm}</em></p>
-
-      <hr />
-
-      {/* Use props to send variables from App component to List component */}
-      <List list={stories} />
     </div>
-  );
+  )
+
 }
 
 /**
  * List component
- * @param {*} props Stories object defined in App component
+ * @param {Object} props.list Stories object defined in App component
  */
 const List = props => {
   return props.list.map(item => 
