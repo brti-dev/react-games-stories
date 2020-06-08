@@ -21,14 +21,26 @@ const App = () => {
       objectID: 1,
     },
   ];
-
+  
+  // useState hook takes initial state as argument, then returns two values
+  // ret[0] = current state
+  // ret[1] = function to update state
+  const BLANK_SEARCH_TERM = 'nothing yet'
+  const [searchTerm, setSearchTerm] = React.useState(BLANK_SEARCH_TERM)
+  
   /**
    * A callback handler to be used in the Search component but calls back here
    * @param {Event} event onChange event
    */
   const handleSearch = event => {
     console.log('onSearch event triggered', event.target.value)
+    let term = event.target.value == '' ? BLANK_SEARCH_TERM : event.target.value
+    setSearchTerm(term)
   }
+
+  const searchStories = stories.filter(story =>
+    story.title.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
   return (
     <div>
@@ -37,12 +49,12 @@ const App = () => {
       <img src={logo} className="App-logo" alt="logo" />
 
       {/* Search component; Send callback function to component using onSearch event */}
-      <Search onSearch={handleSearch}/>
+      <Search onSearch={handleSearch} searchTerm={searchTerm} />
 
       <hr />
 
       {/* Use props to send variables from App component to List component */}
-      <List list={stories} />
+      <List list={searchStories} />
     </div>
   );
 }
@@ -50,34 +62,20 @@ const App = () => {
 /**
  * Search component
  * @param {Object} props.onSearch Callback function to communicate with App component
+ * @param {String} props.searchTerm The search term
  */
 const Search = props => {
   console.log('Search.props', props)
-  // useState hook takes initial state as argument, then returns two values
-  // ret[0] = current state
-  // ret[1] = function to update state
-  const [searchTerm, setSearchTerm] = React.useState('nothing yet')
-
-  /**
-   * Handle oneChange of search field
-   * When field changes, access function to update state via useState
-   * @param {Event} event onChange event object
-   */
-  const handleChange = event => {
-    setSearchTerm(event.target.value)
-    // callback to App component 
-    props.onSearch(event)
-    console.log(event.timeStamp, event.target.value, event.type);
-  }
 
   return (
     <div>
       <fieldset>
         <label htmlFor="search">Search: </label>
-        <input id="search" type="text" onChange={handleChange} />
+        {/* callback directly to props */}
+        <input id="search" type="text" onChange={props.onSearch} />
       </fieldset>
-      
-      <p>Searching for <em>{searchTerm}</em></p>
+
+      <p>Searching for <em>{props.searchTerm}</em></p>
     </div>
   )
 
