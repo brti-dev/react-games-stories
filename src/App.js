@@ -2,7 +2,9 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-
+/**
+ * App component
+ */
 const App = () => {
   const stories = [
    {
@@ -34,7 +36,7 @@ const App = () => {
    */
   const handleSearch = event => {
     console.log('onSearch event triggered', event.target.value)
-    let term = event.target.value == '' ? BLANK_SEARCH_TERM : event.target.value
+    let term = event.target.value === '' ? BLANK_SEARCH_TERM : event.target.value
     setSearchTerm(term)
   }
 
@@ -65,14 +67,15 @@ const App = () => {
  * @param {String} props.searchTerm The search term
  */
 const Search = props => {
-  console.log('Search.props', props)
+  console.log('Search component', 'props:', props)
 
   return (
     <div>
       <fieldset>
         <label htmlFor="search">Search: </label>
-        {/* callback directly to props */}
-        <input id="search" type="text" onChange={props.onSearch} />
+        {/* callback directly to props 
+            By adding React value, it becomes a controlled component */}
+        <input id="search" type="text" value={props.searchTerm} onChange={props.onSearch} />
       </fieldset>
 
       <p>Searching for <em>{props.searchTerm}</em></p>
@@ -86,6 +89,7 @@ const Search = props => {
  * @param {Object} props.list Stories object defined in App component
  */
 const List = props => {
+  console.log('List component', 'props:', props)
   return props.list.map(item => 
       <dl key={item.objectID}>
         <dt>Title</dt>
