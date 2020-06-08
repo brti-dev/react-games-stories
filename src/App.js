@@ -22,8 +22,16 @@ const App = () => {
     },
   ];
 
+  // useState hook takes initial state as argument, then returns two values
+  // ret[0] = current state
+  // ret[1] = function to update state
   const [searchTerm, setSearchTerm] = React.useState('nothing yet')
 
+  /**
+   * Handle oneChange of search field
+   * When field changes, access function to update state via useState
+   * @param {Event} event onChange event object
+   */
   const handleChange = event => {
     setSearchTerm(event.target.value)
     console.log(event.timeStamp, event.target.value, event.type);
