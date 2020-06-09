@@ -24,11 +24,28 @@ const App = () => {
     },
   ];
   
-  // useState hook takes initial state as argument, then returns two values
-  // ret[0] = current state
-  // ret[1] = function to update state
-  const BLANK_SEARCH_TERM = 'nothing yet'
-  const [searchTerm, setSearchTerm] = React.useState(BLANK_SEARCH_TERM)
+  const BLANK_SEARCH_TERM = 'React'
+  /** 
+   * useState hook: preserve variables between function calls, beyond function exit
+   * @param {mixed} InitialState Takes initial state as argument, then returns two values:
+   * @returns {Array} [current state, function to update state]
+   */
+  const [searchTerm, setSearchTerm] = React.useState(
+    // Preserve search query via useState + local storage
+    // local storage side effect
+    localStorage.getItem('search') || BLANK_SEARCH_TERM
+  )
+  
+  /**
+   * useEffect hook allows opt-in to component lifecycle
+   * @param function Where the side-effect occurs; Called initially and if dependency variables change
+   * @param array Dependency variables; If one changes, the function is called
+   */
+  React.useEffect(() => {
+    console.log('useEffect:searchTerm')
+    // update locally-stored search term whenever `searchTerm` changes
+    localStorage.setItem('search', searchTerm)
+  }, [searchTerm])
   
   /**
    * A callback handler to be used in the Search component but calls back here
@@ -37,6 +54,7 @@ const App = () => {
   const handleSearch = event => {
     console.log('onSearch event triggered', event.target.value)
     let term = event.target.value
+    // Update the state of searchTerm
     setSearchTerm(term)
   }
 
@@ -44,11 +62,31 @@ const App = () => {
     story.title.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
+  const [count, setCount] = React.useState(
+    Number(localStorage.getItem('count')) || 0
+  )
+
+  const handleCount = () => {
+    setCount(count + 1)
+    localStorage.setItem('count', count + 1)
+  }
+
+  // useEffect: Do something after render
+  // React will remember this function ("effect") and call it after performing DOM updates
+  React.useEffect(() => {
+    console.log('useEffect:count')
+    document.title = `You clicked ${count} times`
+  }, [count]) // Only re-run the effect if count changes
+
   return (
     <div>
       <h1>My Hacker Stories</h1>
 
       <img src={logo} className="App-logo" alt="logo" />
+
+      <p>
+        <button onClick={handleCount}>Counter++</button>
+      </p>
 
       {/* Search component; Send callback function to component using onSearch event */}
       <Search onSearch={handleSearch} searchTerm={searchTerm} />
@@ -66,7 +104,7 @@ const App = () => {
  * @param {Object} props.onSearch Callback function to communicate with App component
  * @param {String} props.searchTerm The search term
  */
-const Search = props => {
+function Search(props) {
   console.log('Search component', 'props:', props)
 
   const {onSearch, searchTerm} = props
@@ -90,14 +128,18 @@ const Search = props => {
  * List component
  * @param {Object} props.list Stories object defined in App component
  */
-const List = ({list}) => list.map(item => {
-  console.log('list.map', 'item:', list)
-  return <Item key={item.objectID} item={item} />
-})
+const List = ({list}) => {
+  console.log('List component', 'props.list:', list)
+  return list.map(item => <Item key={item.objectID} item={item} />)
+}
 
+/**
+ * Item component
+ * @param {Object} props.item Item object
+ */
 const Item = props => {
   console.log('Item component', 'props:', props)
-  let item = props.item
+  const {item} = props
   return (
       <dl key={item.objectID}>
         <dt>Title</dt>
