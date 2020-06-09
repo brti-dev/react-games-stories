@@ -3,6 +3,37 @@ import logo from './logo.svg';
 import './App.css';
 
 /**
+ * An encapuslated custom hook
+ * @param {string} key A key to define this instance so `value` is not overwritten
+ * @param {string} initialState Default value for useState()
+ */
+function useSemiPersistentState(key, initialState) {
+  /** 
+   * useState hook: preserve variables between function calls, beyond function exit
+   * @param {mixed} InitialState Takes initial state as argument, then returns two values:
+   * @returns {Array} [current state, function to update state]
+   */
+  const [value, setvalue] = React.useState(
+    // Preserve search query via useState + local storage
+    // local storage side effect
+    localStorage.getItem(key) || initialState
+  )
+    
+  /**
+   * useEffect hook allows opt-in to component lifecycle
+   * @param function Where the side-effect occurs; Called initially and (if dependency variable exists) if dependency variables change
+   * @param array Dependency variables; If one changes, the function is called
+   */
+  React.useEffect(() => {
+    console.log('useEffect:searchValue')
+    // update locally-stored search term whenever `value` changes
+    localStorage.setItem(key, value)
+  }, [value, key]) // Only re-run the effect if `key` and/or `value` changes
+
+  return [value, setvalue]
+}
+
+/**
  * App component
  */
 const App = () => {
@@ -24,28 +55,7 @@ const App = () => {
     },
   ];
   
-  const BLANK_SEARCH_TERM = 'React'
-  /** 
-   * useState hook: preserve variables between function calls, beyond function exit
-   * @param {mixed} InitialState Takes initial state as argument, then returns two values:
-   * @returns {Array} [current state, function to update state]
-   */
-  const [searchTerm, setSearchTerm] = React.useState(
-    // Preserve search query via useState + local storage
-    // local storage side effect
-    localStorage.getItem('search') || BLANK_SEARCH_TERM
-  )
-  
-  /**
-   * useEffect hook allows opt-in to component lifecycle
-   * @param function Where the side-effect occurs; Called initially and if dependency variables change
-   * @param array Dependency variables; If one changes, the function is called
-   */
-  React.useEffect(() => {
-    console.log('useEffect:searchTerm')
-    // update locally-stored search term whenever `searchTerm` changes
-    localStorage.setItem('search', searchTerm)
-  }, [searchTerm])
+  const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'Re')
   
   /**
    * A callback handler to be used in the Search component but calls back here
