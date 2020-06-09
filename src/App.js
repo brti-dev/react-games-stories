@@ -36,7 +36,7 @@ const App = () => {
    */
   const handleSearch = event => {
     console.log('onSearch event triggered', event.target.value)
-    let term = event.target.value === '' ? BLANK_SEARCH_TERM : event.target.value
+    let term = event.target.value
     setSearchTerm(term)
   }
 
@@ -69,16 +69,18 @@ const App = () => {
 const Search = props => {
   console.log('Search component', 'props:', props)
 
+  const {onSearch, searchTerm} = props
+
   return (
     <div>
       <fieldset>
         <label htmlFor="search">Search: </label>
         {/* callback directly to props 
             By adding React value, it becomes a controlled component */}
-        <input id="search" type="text" value={props.searchTerm} onChange={props.onSearch} />
+        <input id="search" type="text" value={searchTerm} onChange={onSearch} />
       </fieldset>
 
-      <p>Searching for <em>{props.searchTerm}</em></p>
+      <p>Searching for <em>{searchTerm}</em></p>
     </div>
   )
 
@@ -88,9 +90,15 @@ const Search = props => {
  * List component
  * @param {Object} props.list Stories object defined in App component
  */
-const List = props => {
-  console.log('List component', 'props:', props)
-  return props.list.map(item => 
+const List = ({list}) => list.map(item => {
+  console.log('list.map', 'item:', list)
+  return <Item key={item.objectID} item={item} />
+})
+
+const Item = props => {
+  console.log('Item component', 'props:', props)
+  let item = props.item
+  return (
       <dl key={item.objectID}>
         <dt>Title</dt>
         <dd><a href={item.url}>{item.title}</a></dd>
