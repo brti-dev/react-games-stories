@@ -113,7 +113,10 @@ const App = () => {
         <button onClick={handleCount}>Counter++</button>
       </p>
 
-      <InputWithLabel id="search" label="Search" value={searchTerm} onInputChange={handleSearch} numResults={searchNum} />
+      {/* prop.children = 'Search' */}
+      <InputWithLabel id="search" value={searchTerm} onInputChange={handleSearch} numResults={searchNum}>
+        Search: 
+      </InputWithLabel>
 
       {/* Use props to send variables from App component to List component */}
       <List list={searchGames} />
@@ -125,19 +128,20 @@ const App = () => {
  * InputWithLabel component
  * @param {String} id 
  * @param {String} type Input type form field
- * @param {String} label
  * @param {String} value The search term
  * @param {Event} onInputChange
+ * @param {Number} numResults Number of results after list is filtered
+ * @param {String} children Inner HTML of the component
  */
 function InputWithLabel(props) {
   console.log('InputWithLabel component', 'props:', props)
 
-  const {id, type='text', label, value, onInputChange, numResults} = props
+  const {id, type='text', children, value, onInputChange, numResults} = props
 
   return (
     <>
       <fieldset>
-        <label htmlFor={id}>{label}</label>
+        <label htmlFor={id}>{children}</label>
         {/* callback directly to props 
             By adding React value, it becomes a controlled component */}
         <input id={id} type={type} value={value} onChange={onInputChange} />
