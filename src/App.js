@@ -89,7 +89,7 @@ const App = () => {
   }, [count]) // Only re-run the effect if count changes
 
   return (
-    <div>
+    <>
       <h1>My Hacker Stories</h1>
 
       <img src={logo} className="App-logo" alt="logo" />
@@ -105,7 +105,7 @@ const App = () => {
 
       {/* Use props to send variables from App component to List component */}
       <List list={searchStories} />
-    </div>
+    </>
   );
 }
 
@@ -120,7 +120,7 @@ function Search(props) {
   const {onSearch, searchTerm} = props
 
   return (
-    <div>
+    <>
       <fieldset>
         <label htmlFor="search">Search: </label>
         {/* callback directly to props 
@@ -129,7 +129,7 @@ function Search(props) {
       </fieldset>
 
       <p>Searching for <em>{searchTerm}</em></p>
-    </div>
+    </>
   )
 
 }
