@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 
 /**
@@ -37,25 +37,41 @@ function useSemiPersistentState(key, initialState) {
  * App component
  */
 const App = () => {
-  const stories = [
+  const games = [
    {
-      title: 'React',
-      url: 'https://reactjs.org/', 
-      author: 'Jordan Walke', 
-      num_comments: 3,
-      points: 4,
-      objectID: 0,
-    }, {
-      title: 'Redux',
-      url: 'https://redux.js.org/', 
-      author: 'Dan Abramov, Andrew Clark', 
-      num_comments: 2,
-      points: 5,
-      objectID: 1,
-    },
+     objectID: 1,
+      title: 'Super Mario Bros.',
+      year_published: 1985,
+   }, {
+     objectID:2,
+     title: "Super Mario World", 
+     year_published: 1990,
+   }, {
+     objectID: 3,
+     title: "Mario Bros.", 
+     year_published: 1984,
+   }, {
+     objectID: 4,
+     title: "The Legend of Zelda",
+     year_published: 1985,
+   }, {
+     objectID: 5,
+     title: "Metroid",
+     year_published: 1987,
+   }, {
+     objectID: 6,
+     title: "Mega Man 2",
+     year_published: 1988,
+   }, {
+     objectID: 7,
+     title: 'Tetris',
+     year_published: 1989,
+   }
   ];
   
-  const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'Re')
+  // Uses useState to preserve the variables between function calls, get variable from local storage
+  // Uses useEffect to save variables to local storage when they change
+  const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'Search all the things')
   
   /**
    * A callback handler to be used in the Search component but calls back here
@@ -68,9 +84,10 @@ const App = () => {
     setSearchTerm(term)
   }
 
-  const searchStories = stories.filter(story =>
+  const searchGames = games.filter(story =>
     story.title.toLowerCase().includes(searchTerm.toLowerCase())
   )
+  const searchNum = searchGames.length;
 
   const [count, setCount] = React.useState(
     Number(localStorage.getItem('count')) || 0
@@ -90,45 +107,43 @@ const App = () => {
 
   return (
     <>
-      <h1>My Hacker Stories</h1>
-
-      <img src={logo} className="App-logo" alt="logo" />
+      <h1>My Games</h1>
 
       <p>
         <button onClick={handleCount}>Counter++</button>
       </p>
 
-      {/* Search component; Send callback function to component using onSearch event */}
-      <Search onSearch={handleSearch} searchTerm={searchTerm} />
-
-      <hr />
+      <InputWithLabel id="search" label="Search" value={searchTerm} onInputChange={handleSearch} numResults={searchNum} />
 
       {/* Use props to send variables from App component to List component */}
-      <List list={searchStories} />
+      <List list={searchGames} />
     </>
   );
 }
 
 /**
- * Search component
- * @param {Object} props.onSearch Callback function to communicate with App component
- * @param {String} props.searchTerm The search term
+ * InputWithLabel component
+ * @param {String} id 
+ * @param {String} type Input type form field
+ * @param {String} label
+ * @param {String} value The search term
+ * @param {Event} onInputChange
  */
-function Search(props) {
-  console.log('Search component', 'props:', props)
+function InputWithLabel(props) {
+  console.log('InputWithLabel component', 'props:', props)
 
-  const {onSearch, searchTerm} = props
+  const {id, type='text', label, value, onInputChange, numResults} = props
 
   return (
     <>
       <fieldset>
-        <label htmlFor="search">Search: </label>
+        <label htmlFor={id}>{label}</label>
         {/* callback directly to props 
             By adding React value, it becomes a controlled component */}
-        <input id="search" type="text" value={searchTerm} onChange={onSearch} />
+        <input id={id} type={type} value={value} onChange={onInputChange} />
       </fieldset>
 
-      <p>Searching for <em>{searchTerm}</em></p>
+      <p>Searching for <em>{value}</em> | <b>{numResults || 'No'}</b> results</p>
     </>
   )
 
@@ -136,7 +151,7 @@ function Search(props) {
 
 /**
  * List component
- * @param {Object} props.list Stories object defined in App component
+ * @param {Object} props.list Games object defined in App component
  */
 const List = ({list}) => {
   console.log('List component', 'props.list:', list)
@@ -153,9 +168,9 @@ const Item = props => {
   return (
       <dl key={item.objectID}>
         <dt>Title</dt>
-        <dd><a href={item.url}>{item.title}</a></dd>
-        <dt>Author</dt>
-        <dd>{item.author.includes(",") ? item.author.split(', ').join(' and ') : item.author}</dd>
+        <dd>{item.title}</dd>
+        <dt>Release</dt>
+        <dd>{item.year_published}</dd>
       </dl>
   )
 }
