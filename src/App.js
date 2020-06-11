@@ -34,6 +34,21 @@ const initialGames = [
   }
 ];
 
+/**
+ * function for useReducer hook
+ * @param {*} state 
+ * @param {*} action Associated with a type
+ * @returns {Function} New state based on state and action args
+ */
+function gamesReducer(state, action) {
+  // Only one type is supported
+  if (action.type == 'SET_GAMES') {
+    return action.payload
+  } else {
+    throw new Error()
+  }
+}
+
 function getAsyncronousGames() {
   return new Promise(resolve => 
     setTimeout(
@@ -96,7 +111,7 @@ const App = () => {
   }
 
   // Make the games list stateful
-  const [games, setGames] = React.useState([])
+  const [games, dispatchGames] = React.useReducer(gamesReducer, [])
   const [isLoading, setIsLoading] = React.useState(false)
   const [isError, setIsError] = React.useState(false)
 
@@ -105,7 +120,11 @@ const App = () => {
 
     getAsyncronousGames()
     .then(result => {
-      setGames(result.data.games)
+      dispatchGames({
+        type: 'SET_GAMES',
+        payload: result.data.games
+      })
+
       setIsLoading(false)
     })
     .catch(() => setIsError(true))
@@ -116,7 +135,10 @@ const App = () => {
       game => item.objectID !== game.objectID
     )
 
-    setGames(newGames)
+    dispatchGames({
+      type: 'SET_GAMES',
+      payload: newGames
+    })
   }
 
   const searchGames = games.filter(story =>
@@ -155,7 +177,7 @@ const App = () => {
       </InputWithLabel>
 
       {isError && <p>Something went wrong</p>}
-      
+
       {isLoading ? (<p>Loading...</p>) : (
         <List list={searchGames} onRemoveItem={handleRemoveGame} />
       )}
