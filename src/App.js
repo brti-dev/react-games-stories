@@ -1,6 +1,38 @@
 import React from 'react';
 // import logo from './logo.svg';
 import './App.css';
+      
+const initialGames = [
+  {
+    objectID: 1,
+    title: 'Super Mario Bros.',
+    year_published: 1985,
+  }, {
+    objectID: 2,
+    title: "Super Mario World",
+    year_published: 1990,
+  }, {
+    objectID: 3,
+    title: "Mario Bros.",
+    year_published: 1984,
+  }, {
+    objectID: 4,
+    title: "The Legend of Zelda",
+    year_published: 1985,
+  }, {
+    objectID: 5,
+    title: "Metroid",
+    year_published: 1987,
+  }, {
+    objectID: 6,
+    title: "Mega Man 2",
+    year_published: 1988,
+  }, {
+    objectID: 7,
+    title: 'Tetris',
+    year_published: 1989,
+  }
+];
 
 /**
  * An encapuslated custom hook
@@ -17,7 +49,7 @@ function useSemiPersistentState(key, initialState) {
     // Preserve search query via useState + local storage
     // local storage side effect
     localStorage.getItem(key) || initialState
-  )
+    )
     
   /**
    * useEffect hook allows opt-in to component lifecycle
@@ -37,40 +69,10 @@ function useSemiPersistentState(key, initialState) {
  * App component
  */
 const App = () => {
-  const games = [
-   {
-     objectID: 1,
-      title: 'Super Mario Bros.',
-      year_published: 1985,
-   }, {
-     objectID:2,
-     title: "Super Mario World", 
-     year_published: 1990,
-   }, {
-     objectID: 3,
-     title: "Mario Bros.", 
-     year_published: 1984,
-   }, {
-     objectID: 4,
-     title: "The Legend of Zelda",
-     year_published: 1985,
-   }, {
-     objectID: 5,
-     title: "Metroid",
-     year_published: 1987,
-   }, {
-     objectID: 6,
-     title: "Mega Man 2",
-     year_published: 1988,
-   }, {
-     objectID: 7,
-     title: 'Tetris',
-     year_published: 1989,
-   }
-  ];
   
-  // Uses useState to preserve the variables between function calls, get variable from local storage
-  // Uses useEffect to save variables to local storage when they change
+  // Use useState to preserve the variables between function calls, get variable from local storage
+  // Use useEffect to save variables to local storage when they change
+
   const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'Search all the things')
   
   /**
@@ -84,9 +86,21 @@ const App = () => {
     setSearchTerm(term)
   }
 
+  // Make the games list stateful
+  const [games, setGames] = React.useState(initialGames)
+
+  const handleRemoveGame = item => {
+    const newGames = games.filter(
+      game => item.objectID !== game.objectID
+    )
+
+    setGames(newGames)
+  }
+
   const searchGames = games.filter(story =>
     story.title.toLowerCase().includes(searchTerm.toLowerCase())
   )
+
   const searchNum = searchGames.length;
 
   const [count, setCount] = React.useState(
@@ -119,7 +133,7 @@ const App = () => {
       </InputWithLabel>
 
       {/* Use props to send variables from App component to List component */}
-      <List list={searchGames} />
+      <List list={searchGames} onRemoveItem={handleRemoveGame} />
     </>
   );
 }
@@ -173,26 +187,39 @@ function InputWithLabel(props) {
 /**
  * List component
  * @param {Object} props.list Games object defined in App component
+ * @param {Function??} ??????
  */
-const List = ({list}) => {
+const List = ({list, onRemoveItem}) => {
   console.log('List component', 'props.list:', list)
-  return list.map(item => <Item key={item.objectID} item={item} />)
+  return list.map(item => <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />)
 }
 
 /**
  * Item component
  * @param {Object} props.item Item object
+ * @param {} onRemoveItem
  */
 const Item = props => {
   console.log('Item component', 'props:', props)
-  const {item} = props
+  const {item, onRemoveItem} = props
+
+  function handleRemoveItem() {
+    onRemoveItem(item)
+  }
+
   return (
+    <>
       <dl key={item.objectID}>
         <dt>Title</dt>
         <dd>{item.title}</dd>
         <dt>Release</dt>
         <dd>{item.year_published}</dd>
       </dl>
+      <div>
+        {/* Inline handler replaces handleRemoveItem() */}
+        <button type="button" onClick={() => onRemoveItem(item)}>Dismiss</button>
+      </div>
+    </>
   )
 }
 
