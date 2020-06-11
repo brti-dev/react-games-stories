@@ -98,14 +98,17 @@ const App = () => {
   // Make the games list stateful
   const [games, setGames] = React.useState([])
   const [isLoading, setIsLoading] = React.useState(false)
+  const [isError, setIsError] = React.useState(false)
 
   React.useEffect(() => {
     setIsLoading(true)
 
-    getAsyncronousGames().then(result => {
+    getAsyncronousGames()
+    .then(result => {
       setGames(result.data.games)
       setIsLoading(false)
     })
+    .catch(() => setIsError(true))
   }, []) // Empty dependency array, side-effect only runs once upon first render
 
   const handleRemoveGame = item => {
@@ -151,7 +154,8 @@ const App = () => {
         Search: 
       </InputWithLabel>
 
-      {/* Use props to send variables from App component to List component */}
+      {isError && <p>Something went wrong</p>}
+      
       {isLoading ? (<p>Loading...</p>) : (
         <List list={searchGames} onRemoveItem={handleRemoveGame} />
       )}
