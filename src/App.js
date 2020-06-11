@@ -34,6 +34,15 @@ const initialGames = [
   }
 ];
 
+function getAsyncronousGames() {
+  return new Promise(resolve => 
+    setTimeout(
+      () => resolve({ data: { games: initialGames }}), 
+      2000
+    )
+  )
+}
+
 /**
  * An encapuslated custom hook
  * @param {string} key A key to define this instance so `value` is not overwritten
@@ -87,7 +96,17 @@ const App = () => {
   }
 
   // Make the games list stateful
-  const [games, setGames] = React.useState(initialGames)
+  const [games, setGames] = React.useState([])
+  const [isLoading, setIsLoading] = React.useState(false)
+
+  React.useEffect(() => {
+    setIsLoading(true)
+
+    getAsyncronousGames().then(result => {
+      setGames(result.data.games)
+      setIsLoading(false)
+    })
+  }, []) // Empty dependency array, side-effect only runs once upon first render
 
   const handleRemoveGame = item => {
     const newGames = games.filter(
@@ -133,7 +152,9 @@ const App = () => {
       </InputWithLabel>
 
       {/* Use props to send variables from App component to List component */}
-      <List list={searchGames} onRemoveItem={handleRemoveGame} />
+      {isLoading ? (<p>Loading...</p>) : (
+        <List list={searchGames} onRemoveItem={handleRemoveGame} />
+      )}
     </>
   );
 }
