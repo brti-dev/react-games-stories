@@ -34,25 +34,27 @@ const initialGames = [
   }
 ];
 
-/**
- * function for useReducer hook
- * @param {*} state 
- * @param {*} action Associated with a type
- * @returns {Function} New state based on state and action args
- */
-function gamesReducer(state, action) {
-  // Only one type is supported
-  if (action.type == 'SET_GAMES') {
-    return action.payload
-  } else {
-    throw new Error()
-  }
-}
+// /**
+//  * function for useReducer hook
+//  * @param {*} state ?????????
+//  * @param {String} action.type Describes the action; Only one type `SET_GAMES` is supported here
+//  * @returns {Function} New state based on state and action args
+//  */
+// function gamesReducer(state, action) {
+//   // Only one type is supported
+//   if (action.type == 'SET_GAMES') {
+//     return action.payload
+//   } else {
+//     throw new Error()
+//   }
+// }
 
 function getAsyncronousGames() {
-  return new Promise(resolve => 
+  return new Promise((resolve, reject) => 
+    // Emulate an HTTP request
     setTimeout(
       () => resolve({ data: { games: initialGames }}), 
+      // reject,
       2000
     )
   )
@@ -73,7 +75,7 @@ function useSemiPersistentState(key, initialState) {
     // Preserve search query via useState + local storage
     // local storage side effect
     localStorage.getItem(key) || initialState
-    )
+  )
     
   /**
    * useEffect hook allows opt-in to component lifecycle
@@ -110,39 +112,66 @@ const App = () => {
     setSearchTerm(term)
   }
 
-  // Make the games list stateful
-  const [games, dispatchGames] = React.useReducer(gamesReducer, [])
-  const [isLoading, setIsLoading] = React.useState(false)
-  const [isError, setIsError] = React.useState(false)
+  // Merge games list, loading, error states into Reducer
+  const initialState = { data: [], isLoading: false, isError: false }
+  const reducer = (state, action) => {
+    // Return a new state based on given action
+    console.log('Games Reducer', state, action)
+    switch (action.type) {
+      case 'GAMES_FETCH_INIT':
+        return {
+          ...state,
+          isLoading: true,
+          isError: false,
+        }
+      case 'GAMES_FETCH_SUCCESS':
+        return {
+          ...state,
+          isLoading: false,
+          isError: false,
+          data: action.payload,
+        }
+        case 'GAMES_FETCH_FAIL':
+          return {
+            ...state,
+            isLoading: false,
+            isError: true,
+          }
+      case 'REMOVE_GAME':
+        return {
+          ...state,
+          data: state.data.filter(
+            game => action.payload.objectID !== game.objectID
+          ),
+        }
+      default:
+        throw new Error()
+    }
+  }
+  const [games, dispatchGames] = React.useReducer(reducer, initialState);
 
   React.useEffect(() => {
-    setIsLoading(true)
+    dispatchGames({type: 'GAMES_FETCH_INIT'})
 
     getAsyncronousGames()
     .then(result => {
       dispatchGames({
-        type: 'SET_GAMES',
+        type: 'GAMES_FETCH_SUCCESS',
         payload: result.data.games
       })
-
-      setIsLoading(false)
     })
-    .catch(() => setIsError(true))
+      .catch(() => dispatchGames({ type: 'GAMES_FETCH_FAIL' }))
   }, []) // Empty dependency array, side-effect only runs once upon first render
 
   const handleRemoveGame = item => {
-    const newGames = games.filter(
-      game => item.objectID !== game.objectID
-    )
-
     dispatchGames({
-      type: 'SET_GAMES',
-      payload: newGames
+      type: 'REMOVE_GAME',
+      payload: item
     })
   }
 
-  const searchGames = games.filter(story =>
-    story.title.toLowerCase().includes(searchTerm.toLowerCase())
+  const searchGames = games.data.filter(game =>
+    game.title.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const searchNum = searchGames.length;
@@ -176,9 +205,9 @@ const App = () => {
         Search: 
       </InputWithLabel>
 
-      {isError && <p>Something went wrong</p>}
+      {games.isError && <p>Something went wrong</p>}
 
-      {isLoading ? (<p>Loading...</p>) : (
+      {games.isLoading ? (<p>Loading...</p>) : (
         <List list={searchGames} onRemoveItem={handleRemoveGame} />
       )}
     </>
