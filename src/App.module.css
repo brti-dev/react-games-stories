@@ -1,0 +1,34 @@
+.container {
+    border: 1em solid #83a4d4;
+    color: #171212;
+  }
+  
+  .headlinePrimary {
+    font-size: 48px;
+    font-weight: 800;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .item {
+      border: 2px solid gray;
+    position: relative; }
+    .item > dl {
+        padding: 1em;
+    }
+    .item > dl + button {
+        position: absolute;
+        top: 1em;
+        right: 1em;
+    }
+
+.button {
+    background-color: silver;
+    border: 2px solid gray;
+}
+.buttony {
+    font-weight: bold; 
+}
+.button-over {
+    background-color: white;
+    border-color: black;
+}

@@ -1,7 +1,8 @@
 import React from 'react';
 // import logo from './logo.svg';
-import './App.css';
-      
+import styles from './App.module.css';
+import cs from 'classnames';
+
 const initialGames = [
   {
     objectID: 1,
@@ -195,11 +196,11 @@ const App = () => {
   }, [count]) // Only re-run the effect if count changes
 
   return (
-    <>
-      <h1>My Things</h1>
+    <div className={styles.container}>
+      <h1 className={styles.headlinePrimary}>My Things</h1>
 
       <p>
-        <button onClick={handleCount}>Counter++</button>
+        <button onClick={handleCount} style={{ fontWeight: 'bold' }}>Counter++</button>
       </p>
 
       {/* prop.children = 'Search' */}
@@ -212,7 +213,7 @@ const App = () => {
       {games.isLoading ? (<p>Loading...</p>) : (
         <List list={searchGames} onRemoveItem={handleRemoveGame} />
       )}
-    </>
+    </div>
   );
 }
 
@@ -281,23 +282,18 @@ const Item = props => {
   console.log('Item component', 'props:', props)
   const {item, onRemoveItem} = props
 
-  function handleRemoveItem() {
-    onRemoveItem(item)
-  }
+  let buttonClass = cs(styles.button, styles.buttony)
 
   return (
-    <>
+    <div class={styles.item}>
       <dl key={item.objectID}>
         <dt>Title</dt>
         <dd>{item.title}</dd>
         <dt>Release</dt>
         <dd>{item.year_published}</dd>
       </dl>
-      <div>
-        {/* Inline handler replaces handleRemoveItem() */}
-        <button type="button" onClick={() => onRemoveItem(item)}>Dismiss</button>
-      </div>
-    </>
+      <button type="button" onClick={() => onRemoveItem(item)} className={buttonClass}>Dismiss</button>
+    </div>
   )
 }
 
