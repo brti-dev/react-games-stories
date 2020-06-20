@@ -23,8 +23,11 @@
 
 .button {
     background-color: silver;
-    border: 2px solid gray;
-}
+    border: 2px solid gray; }
+    .button:hover > svg > g {
+        fill: white;
+        stroke: white;
+    }
 .buttony {
     font-weight: bold; 
 }

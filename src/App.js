@@ -2,6 +2,7 @@ import React from 'react';
 // import logo from './logo.svg';
 import styles from './App.module.css';
 import cs from 'classnames';
+import { ReactComponent as Check } from './check.svg';
 
 const initialGames = [
   {
@@ -213,6 +214,8 @@ const App = () => {
       {games.isLoading ? (<p>Loading...</p>) : (
         <List list={searchGames} onRemoveItem={handleRemoveGame} />
       )}
+
+      <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
     </div>
   );
 }
@@ -292,7 +295,7 @@ const Item = props => {
         <dt>Release</dt>
         <dd>{item.year_published}</dd>
       </dl>
-      <button type="button" onClick={() => onRemoveItem(item)} className={buttonClass}>Dismiss</button>
+      <button type="button" onClick={() => onRemoveItem(item)} className={buttonClass}><Check height="18px" width="18px" /></button>
     </div>
   )
 }
