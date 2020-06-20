@@ -49,13 +49,13 @@ const initialGames = [
 //   }
 // }
 
-function getAsyncronousGames() {
+async function getGames() {
   return new Promise((resolve, reject) => 
     // Emulate an HTTP request
     setTimeout(
       () => resolve({ data: { games: initialGames }}), 
       // reject,
-      2000
+      1000
     )
   )
 }
@@ -150,18 +150,20 @@ const App = () => {
   }
   const [games, dispatchGames] = React.useReducer(reducer, initialState);
 
-  React.useEffect(() => {
+  const handleFetchGames = React.useCallback(async () => {
     dispatchGames({type: 'GAMES_FETCH_INIT'})
 
-    getAsyncronousGames()
-    .then(result => {
-      dispatchGames({
-        type: 'GAMES_FETCH_SUCCESS',
-        payload: result.data.games
-      })
+    const result = await getGames()
+
+    dispatchGames({
+      type: 'GAMES_FETCH_SUCCESS',
+      payload: result.data.games
     })
-      .catch(() => dispatchGames({ type: 'GAMES_FETCH_FAIL' }))
-  }, []) // Empty dependency array, side-effect only runs once upon first render
+  }, [searchTerm])
+
+  React.useEffect(() => {
+    handleFetchGames();
+  }, [handleFetchGames])
 
   const handleRemoveGame = item => {
     dispatchGames({
@@ -194,7 +196,7 @@ const App = () => {
 
   return (
     <>
-      <h1>My Games</h1>
+      <h1>My Things</h1>
 
       <p>
         <button onClick={handleCount}>Counter++</button>
