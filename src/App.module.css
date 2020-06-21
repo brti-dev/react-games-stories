@@ -9,17 +9,16 @@
     font-family: Arial, Helvetica, sans-serif;
   }
 
-  .item {
-      border: 2px solid gray;
+.item {
+    border: 2px solid gray;
     position: relative; }
     .item > dl {
-        padding: 1em;
-    }
-    .item > dl + button {
-        position: absolute;
-        top: 1em;
-        right: 1em;
-    }
+        padding: 1em; }
+        .item > dl + button {
+            position: absolute;
+            top: 1em;
+            right: 1em;
+        }
 
 .button {
     background-color: silver;

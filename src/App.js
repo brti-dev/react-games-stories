@@ -1,7 +1,12 @@
 import React from 'react';
 // import logo from './logo.svg';
+
+// CSS
 import styles from './App.module.css';
-import cs from 'classnames';
+import cs from 'classnames'; 
+import styled from 'styled-components'; // CSS in JS
+
+// Images
 import { ReactComponent as Check } from './check.svg';
 
 const initialGames = [
@@ -92,6 +97,11 @@ function useSemiPersistentState(key, initialState) {
 
   return [value, setvalue]
 }
+
+// Styled component for Paragraph component
+const StyledP = styled.p`
+    background-color: pink;
+  `;
 
 /**
  * App component
@@ -200,9 +210,9 @@ const App = () => {
     <div className={styles.container}>
       <h1 className={styles.headlinePrimary}>My Things</h1>
 
-      <p>
+      <StyledP>
         <button onClick={handleCount} style={{ fontWeight: 'bold' }}>Counter++</button>
-      </p>
+      </StyledP>
 
       {/* prop.children = 'Search' */}
       <InputWithLabel id="search" value={searchTerm} onInputChange={handleSearch} numResults={searchNum} isFocused>
@@ -276,6 +286,22 @@ const List = ({list, onRemoveItem}) => {
   return list.map(item => <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />)
 }
 
+let StyledDL = styled.dl`
+  display: flex;
+`
+let StyledDT = styled.dt`
+  font-weight: bold;
+  text-align: right;
+  margin: 0;
+  padding: 0 1em 0 0;
+`
+let StyledDD = styled.dd`
+  margin: 0;
+  padding: 0;
+  background-color: ${props => props.backgroundColor};
+  color: white;
+`
+
 /**
  * Item component
  * @param {Object} props.item Item object
@@ -289,12 +315,12 @@ const Item = props => {
 
   return (
     <div class={styles.item}>
-      <dl key={item.objectID}>
-        <dt>Title</dt>
-        <dd>{item.title}</dd>
-        <dt>Release</dt>
-        <dd>{item.year_published}</dd>
-      </dl>
+      <StyledDL key={item.objectID}>
+        <StyledDT>Title</StyledDT>
+        <StyledDD backgroundColor="gray">{item.title}</StyledDD>
+        <StyledDT>Release</StyledDT>
+        <StyledDD backgroundColor="black">{item.year_published}</StyledDD>
+      </StyledDL>
       <button type="button" onClick={() => onRemoveItem(item)} className={buttonClass}><Check height="18px" width="18px" /></button>
     </div>
   )
