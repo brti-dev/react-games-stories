@@ -177,12 +177,12 @@ const App = () => {
     handleFetchGames();
   }, [handleFetchGames])
 
-  const handleRemoveGame = item => {
+  const handleRemoveGame = React.useCallback(item => {
     dispatchGames({
       type: 'REMOVE_GAME',
       payload: item
     })
-  }
+  }, []) // No dependencies! function only declared once when App component initially renders
 
   const searchGames = games.data.filter(game =>
     game.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -276,15 +276,11 @@ function InputWithLabel(props) {
 
 }
 
-/**
- * List component
- * @param {Object} props.list Games object defined in App component
- * @param {Function??} ??????
- */
-const List = ({list, onRemoveItem}) => {
+// Create a memo to prevent re-rendering if props don't change
+const List = React.memo(({list, onRemoveItem}) => {
   console.log('List component', 'props.list:', list)
   return list.map(item => <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />)
-}
+});
 
 let StyledDL = styled.dl`
   display: flex;
