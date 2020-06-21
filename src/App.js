@@ -73,26 +73,26 @@ async function getGames() {
  * @param {string} initialState Default value for useState()
  */
 function useSemiPersistentState(key, initialState) {
-  /** 
-   * useState hook: preserve variables between function calls, beyond function exit
-   * @param {mixed} InitialState Takes initial state as argument, then returns two values:
-   * @returns {Array} [current state, function to update state]
-   */
+  // On first render, create reference with current prop set to false
+  // Later, prevent side effect from doing its business on first render, but allow on subsequent renders
+  const isMounted = React.useRef(false);
+  console.log('isMounted', isMounted);
+
   const [value, setvalue] = React.useState(
     // Preserve search query via useState + local storage
     // local storage side effect
     localStorage.getItem(key) || initialState
   )
-    
-  /**
-   * useEffect hook allows opt-in to component lifecycle
-   * @param function Where the side-effect occurs; Called initially and (if dependency variable exists) if dependency variables change
-   * @param array Dependency variables; If one changes, the function is called
-   */
+  
   React.useEffect(() => {
-    console.log('useEffect:searchValue')
-    // update locally-stored search term whenever `value` changes
-    localStorage.setItem(key, value)
+    if (!isMounted.current) {
+      isMounted.current = true;
+      // From now on over the lifetime of the component, isMounted will remain true
+    } else {
+      console.log('useEffect:searchValue')
+      // update locally-stored search term whenever `value` changes
+      localStorage.setItem(key, value)
+    }
   }, [value, key]) // Only re-run the effect if `key` and/or `value` changes
 
   return [value, setvalue]
