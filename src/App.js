@@ -100,8 +100,8 @@ function useSemiPersistentState(key, initialState) {
 
 // Styled component for Paragraph component
 const StyledP = styled.p`
-    background-color: pink;
-  `;
+  background-color: pink;
+`;
 
 /**
  * App component
@@ -308,12 +308,13 @@ const Item = props => {
   const {item, onRemoveItem} = props
 
   let buttonClass = cs(styles.button, styles.buttony)
+  let link = '/link/' + item.objectID
 
   return (
-    <div class={styles.item}>
+    <div className={styles.item}>
       <StyledDL key={item.objectID}>
         <StyledDT>Title</StyledDT>
-        <StyledDD backgroundColor="gray">{item.title}</StyledDD>
+        <StyledDD backgroundColor="gray"><a href={link}>{item.title}</a></StyledDD>
         <StyledDT>Release</StyledDT>
         <StyledDD backgroundColor="black">{item.year_published}</StyledDD>
       </StyledDL>
@@ -323,3 +324,5 @@ const Item = props => {
 }
 
 export default App;
+
+export { List, InputWithLabel, Item, initialGames }

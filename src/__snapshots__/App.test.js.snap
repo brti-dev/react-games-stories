@@ -1,0 +1,404 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputWithLabel renders snapshot 1`] = `
+Array [
+  <fieldset>
+    <label
+      htmlFor="search"
+    />
+    <input
+      id="search"
+      onChange={
+        [MockFunction] {
+          "calls": Array [
+            Array [
+              Object {
+                "target": "mario",
+              },
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+          ],
+        }
+      }
+      type="text"
+      value="mar"
+    />
+  </fieldset>,
+  <p>
+    Searching for 
+    <em>
+      mar
+    </em>
+     | 
+    <b>
+      No
+    </b>
+     results
+  </p>,
+]
+`;
+
+exports[`Item renders snapshot 1`] = `
+<div
+  className="item"
+>
+  <dl
+    className="sc-AxirZ hlnYRa"
+  >
+    <dt
+      className="sc-AxiKw bXlkYw"
+    >
+      Title
+    </dt>
+    <dd
+      className="sc-AxhCb fmmtdR"
+    >
+      <a
+        href="/link/101"
+      >
+        Maniac Mansion
+      </a>
+    </dd>
+    <dt
+      className="sc-AxiKw bXlkYw"
+    >
+      Release
+    </dt>
+    <dd
+      className="sc-AxhCb dOZkBb"
+    >
+      1989
+    </dd>
+  </dl>
+  <button
+    className="button buttony"
+    onClick={[Function]}
+    type="button"
+  >
+    <svg
+      height="18px"
+      width="18px"
+    >
+      check.svg
+    </svg>
+  </button>
+</div>
+`;
+
+exports[`List renders snapshot 1`] = `
+Array [
+  <div
+    className="item"
+  >
+    <dl
+      className="sc-AxirZ hlnYRa"
+    >
+      <dt
+        className="sc-AxiKw bXlkYw"
+      >
+        Title
+      </dt>
+      <dd
+        className="sc-AxhCb fmmtdR"
+      >
+        <a
+          href="/link/1"
+        >
+          Super Mario Bros.
+        </a>
+      </dd>
+      <dt
+        className="sc-AxiKw bXlkYw"
+      >
+        Release
+      </dt>
+      <dd
+        className="sc-AxhCb dOZkBb"
+      >
+        1985
+      </dd>
+    </dl>
+    <button
+      className="button buttony"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        height="18px"
+        width="18px"
+      >
+        check.svg
+      </svg>
+    </button>
+  </div>,
+  <div
+    className="item"
+  >
+    <dl
+      className="sc-AxirZ hlnYRa"
+    >
+      <dt
+        className="sc-AxiKw bXlkYw"
+      >
+        Title
+      </dt>
+      <dd
+        className="sc-AxhCb fmmtdR"
+      >
+        <a
+          href="/link/2"
+        >
+          Super Mario World
+        </a>
+      </dd>
+      <dt
+        className="sc-AxiKw bXlkYw"
+      >
+        Release
+      </dt>
+      <dd
+        className="sc-AxhCb dOZkBb"
+      >
+        1990
+      </dd>
+    </dl>
+    <button
+      className="button buttony"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        height="18px"
+        width="18px"
+      >
+        check.svg
+      </svg>
+    </button>
+  </div>,
+  <div
+    className="item"
+  >
+    <dl
+      className="sc-AxirZ hlnYRa"
+    >
+      <dt
+        className="sc-AxiKw bXlkYw"
+      >
+        Title
+      </dt>
+      <dd
+        className="sc-AxhCb fmmtdR"
+      >
+        <a
+          href="/link/3"
+        >
+          Mario Bros.
+        </a>
+      </dd>
+      <dt
+        className="sc-AxiKw bXlkYw"
+      >
+        Release
+      </dt>
+      <dd
+        className="sc-AxhCb dOZkBb"
+      >
+        1984
+      </dd>
+    </dl>
+    <button
+      className="button buttony"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        height="18px"
+        width="18px"
+      >
+        check.svg
+      </svg>
+    </button>
+  </div>,
+  <div
+    className="item"
+  >
+    <dl
+      className="sc-AxirZ hlnYRa"
+    >
+      <dt
+        className="sc-AxiKw bXlkYw"
+      >
+        Title
+      </dt>
+      <dd
+        className="sc-AxhCb fmmtdR"
+      >
+        <a
+          href="/link/4"
+        >
+          The Legend of Zelda
+        </a>
+      </dd>
+      <dt
+        className="sc-AxiKw bXlkYw"
+      >
+        Release
+      </dt>
+      <dd
+        className="sc-AxhCb dOZkBb"
+      >
+        1985
+      </dd>
+    </dl>
+    <button
+      className="button buttony"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        height="18px"
+        width="18px"
+      >
+        check.svg
+      </svg>
+    </button>
+  </div>,
+  <div
+    className="item"
+  >
+    <dl
+      className="sc-AxirZ hlnYRa"
+    >
+      <dt
+        className="sc-AxiKw bXlkYw"
+      >
+        Title
+      </dt>
+      <dd
+        className="sc-AxhCb fmmtdR"
+      >
+        <a
+          href="/link/5"
+        >
+          Metroid
+        </a>
+      </dd>
+      <dt
+        className="sc-AxiKw bXlkYw"
+      >
+        Release
+      </dt>
+      <dd
+        className="sc-AxhCb dOZkBb"
+      >
+        1987
+      </dd>
+    </dl>
+    <button
+      className="button buttony"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        height="18px"
+        width="18px"
+      >
+        check.svg
+      </svg>
+    </button>
+  </div>,
+  <div
+    className="item"
+  >
+    <dl
+      className="sc-AxirZ hlnYRa"
+    >
+      <dt
+        className="sc-AxiKw bXlkYw"
+      >
+        Title
+      </dt>
+      <dd
+        className="sc-AxhCb fmmtdR"
+      >
+        <a
+          href="/link/6"
+        >
+          Mega Man 2
+        </a>
+      </dd>
+      <dt
+        className="sc-AxiKw bXlkYw"
+      >
+        Release
+      </dt>
+      <dd
+        className="sc-AxhCb dOZkBb"
+      >
+        1988
+      </dd>
+    </dl>
+    <button
+      className="button buttony"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        height="18px"
+        width="18px"
+      >
+        check.svg
+      </svg>
+    </button>
+  </div>,
+  <div
+    className="item"
+  >
+    <dl
+      className="sc-AxirZ hlnYRa"
+    >
+      <dt
+        className="sc-AxiKw bXlkYw"
+      >
+        Title
+      </dt>
+      <dd
+        className="sc-AxhCb fmmtdR"
+      >
+        <a
+          href="/link/7"
+        >
+          Tetris
+        </a>
+      </dd>
+      <dt
+        className="sc-AxiKw bXlkYw"
+      >
+        Release
+      </dt>
+      <dd
+        className="sc-AxhCb dOZkBb"
+      >
+        1989
+      </dd>
+    </dl>
+    <button
+      className="button buttony"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        height="18px"
+        width="18px"
+      >
+        check.svg
+      </svg>
+    </button>
+  </div>,
+]
+`;
