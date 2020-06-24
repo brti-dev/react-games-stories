@@ -1,13 +1,13 @@
 import React from 'react';
-// import logo from './logo.svg';
+
+// Components
+import { List, Item} from './List'
+import InputWithLabel from './InputWithLabel'
 
 // CSS
 import styles from './App.module.css';
-import cs from 'classnames'; 
+// import cs from 'classnames';
 import styled from 'styled-components'; // CSS in JS
-
-// Images
-import { ReactComponent as Check } from './check.svg';
 
 const initialGames = [
   {
@@ -171,7 +171,7 @@ const App = () => {
       type: 'GAMES_FETCH_SUCCESS',
       payload: result.data.games
     })
-  }, [searchTerm])
+  }, [])
 
   React.useEffect(() => {
     handleFetchGames();
@@ -228,99 +228,6 @@ const App = () => {
       <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
     </div>
   );
-}
-
-/**
- * InputWithLabel component
- * @param {String} id 
- * @param {String} type Input type form field
- * @param {String} value The search term
- * @param {Event} onInputChange
- * @param {Number} numResults Number of results after list is filtered
- * @param {String} children Inner HTML of the component
- * @param {Boolean} isFocused Reference to the input field's focus
- */
-function InputWithLabel(props) {
-  console.log('InputWithLabel component', 'props:', props)
-
-  const {id, type='text', children, value, onInputChange, numResults, isFocused} = props
-  
-  // Create a reference to an element
-  // This will later be assigned to the text input element so we can reference it elsewhere in the component
-  // Reference is persistent value for lifetime of component
-  const inputRef = React.useRef()
-
-  // Opt into React’s lifecycle with useEffect Hook
-  // Focus on input field when the component renders (or its dependencies change)
-  React.useEffect(() => {
-    console.log('useEffect:isFocused', isFocused, inputRef)
-    // Access the ref.current property, a mounted text input element
-    if (isFocused && inputRef.current) {
-      inputRef.current.focus()
-    }
-  }, [isFocused])
-
-  return (
-    <>
-      <fieldset>
-        <label htmlFor={id}>{children}</label>
-        {/* Callback directly to props 
-            By adding React value, it becomes a controlled component
-            Access the reserved ref field */}
-        <input ref={inputRef} id={id} type={type} value={value} onChange={onInputChange} />
-      </fieldset>
-
-      <p>Searching for <em>{value}</em> | <b>{numResults || 'No'}</b> results</p>
-    </>
-  )
-
-}
-
-// Create a memo to prevent re-rendering if props don't change
-const List = React.memo(({list, onRemoveItem}) => {
-  console.log('List component', 'props.list:', list)
-  return list.map(item => <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />)
-});
-
-let StyledDL = styled.dl`
-  display: flex;
-`
-let StyledDT = styled.dt`
-  font-weight: bold;
-  text-align: right;
-  margin: 0;
-  padding: 0 1em 0 0;
-`
-let StyledDD = styled.dd`
-  margin: 0;
-  padding: 0;
-  background-color: ${props => props.backgroundColor};
-  color: white;
-`
-
-/**
- * Item component
- * @param {Object} props.item Item object
- * @param {} onRemoveItem
- */
-const Item = props => {
-  console.log('Item component', 'props:', props)
-  const {item, onRemoveItem} = props
-
-  let buttonClass = cs(styles.button, styles.buttony)
-  let link = '/link/' + item.objectID
-
-  return (
-    <div className={styles.item}>
-      <StyledDL key={item.objectID}>
-        <StyledDT>Title</StyledDT>
-        <StyledDD backgroundColor="gray"><a href={link}>{item.title}</a></StyledDD>
-        <StyledDT>Release</StyledDT>
-        <StyledDD backgroundColor="black">{item.year_published}</StyledDD>
-      </StyledDL>
-      <button type="button" onClick={() => onRemoveItem(item)} className={buttonClass}><Check height="18px" width="18px" /></button>
-    </div>
-  )
 }
 
 export default App;
