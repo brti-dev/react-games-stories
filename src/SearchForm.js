@@ -5,20 +5,40 @@ import React from 'react'
 // import cs from 'classnames'; 
 // import styled from 'styled-components'; // CSS in JS
 
+function SortField(props) {
+    console.log('SortField component', props)
+
+    const { sortBy, onSortBy } = props
+    
+    return (
+        <>
+            Sort by
+            <label>
+                <input type="radio" name="sort" value="title" onChange={onSortBy} checked={sortBy === 'title'} /> Title
+            </label>
+            <label>
+                <input type="radio" name="sort" value="year_published" onChange={onSortBy} checked={sortBy === 'year_published'} /> Release
+            </label>
+        </>
+    )
+}
+
 /**
- * InputWithLabel component
- * @param {String} id 
- * @param {String} type Input type form field
+ * SearchForm component
  * @param {String} value The search term
  * @param {Event} onInputChange
  * @param {Number} numResults Number of results after list is filtered
  * @param {String} children Inner HTML of the component
  * @param {Boolean} isFocused Reference to the input field's focus
+ * @param {String} sortBy 'title' | 'year_published'
+ * @param {Event} onSortBy Callback
  */
-function InputWithLabel(props) {
-    console.log('InputWithLabel component', 'props:', props)
+function SearchForm(props) {
+    console.log('SearchForm component', 'props:', props)
 
-    const { id, type = 'text', children, value, onInputChange, numResults, isFocused } = props
+    const { value, onInputChange, numResults, isFocused, children } = props
+
+    console.log()
 
     // Create a reference to an element
     // This will later be assigned to the text input element so we can reference it elsewhere in the component
@@ -38,11 +58,12 @@ function InputWithLabel(props) {
     return (
         <>
             <fieldset>
-                <label htmlFor={id}>{children}</label>
+                <label>Search</label>
                 {/* Callback directly to props 
               By adding React value, it becomes a controlled component
               Access the reserved ref field */}
-                <input ref={inputRef} id={id} type={type} value={value} onChange={onInputChange} />
+                <input ref={inputRef} type="text" value={value} onChange={onInputChange} />
+                { children }
             </fieldset>
 
             <p>Searching for <em>{value}</em> | <b>{numResults || 'No'}</b> results</p>
@@ -50,4 +71,4 @@ function InputWithLabel(props) {
     )
 }
 
-export default InputWithLabel
+export { SearchForm, SortField }

@@ -1,7 +1,7 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import App, { List, InputWithLabel, Item, initialGames, } from './App'
+import App, { List, SearchForm, Item, initialGames, } from './App'
 
 test('two plus two is four', () => {
     expect(2 + 2).toBe(4);
@@ -73,14 +73,14 @@ describe('List', () => {
     })
 })
 
-describe('InputWithLabel', () => {
-    const InputWithLabelProps = {
+describe('SearchForm', () => {
+    const SearchFormProps = {
         id: 'search',
         value: 'mar',
         onInputChange: jest.fn(), //mock function
     }
     
-    const component = renderer.create(<InputWithLabel {...InputWithLabelProps} />)
+    const component = renderer.create(<SearchForm {...SearchFormProps} />)
     const instance = component.root
     let tree = component.toJSON()
 
@@ -94,8 +94,8 @@ describe('InputWithLabel', () => {
 
         instance.findByType('input').props.onChange(pseudoEvent)
 
-        expect(InputWithLabelProps.onInputChange).toHaveBeenCalledTimes(1)
-        expect(InputWithLabelProps.onInputChange).toHaveBeenCalledWith(pseudoEvent)
+        expect(SearchFormProps.onInputChange).toHaveBeenCalledTimes(1)
+        expect(SearchFormProps.onInputChange).toHaveBeenCalledWith(pseudoEvent)
     })
 
     test('renders snapshot', () => {

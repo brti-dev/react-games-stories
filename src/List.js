@@ -18,12 +18,14 @@ let StyledDL = styled.dl`
     display: flex;
   `
 let StyledDT = styled.dt`
+    flex-basis: 25%;
     font-weight: bold;
     text-align: right;
     margin: 0;
     padding: 0 1em 0 0;
   `
 let StyledDD = styled.dd`
+    flex-basis: 25%;
     margin: 0;
     padding: 0;
     background-color: ${props => props.backgroundColor};
