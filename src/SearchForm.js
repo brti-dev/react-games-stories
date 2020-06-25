@@ -5,6 +5,11 @@ import React from 'react'
 // import cs from 'classnames'; 
 // import styled from 'styled-components'; // CSS in JS
 
+/**
+ * SortField component
+ * @prop {String} sortBy 'title' | 'year_published'
+ * @prop {Event} onSortBy Callback
+ */
 function SortField(props) {
     console.log('SortField component', props)
 
@@ -25,18 +30,17 @@ function SortField(props) {
 
 /**
  * SearchForm component
- * @param {String} value The search term
- * @param {Event} onInputChange
- * @param {Number} numResults Number of results after list is filtered
- * @param {String} children Inner HTML of the component
- * @param {Boolean} isFocused Reference to the input field's focus
- * @param {String} sortBy 'title' | 'year_published'
- * @param {Event} onSortBy Callback
+ * @prop {String} value The search term
+ * @prop {Event} onInputChange
+ * @prop {Number} numResults Number of results after list is filtered
+ * @prop {Boolean} isFocused Reference to the input field's focus
+ * @prop {Event} onSearchSubmit
+ * @prop {String} children Inner HTML of the component
  */
 function SearchForm(props) {
     console.log('SearchForm component', 'props:', props)
 
-    const { value, onInputChange, numResults, isFocused, children } = props
+    const { value, onInputChange, numResults, isFocused, onSearchSubmit, children, } = props
 
     console.log()
 
@@ -56,18 +60,19 @@ function SearchForm(props) {
     }, [isFocused])
 
     return (
-        <>
+        <form onSubmit={onSearchSubmit}>
             <fieldset>
                 <label>Search</label>
                 {/* Callback directly to props 
               By adding React value, it becomes a controlled component
               Access the reserved ref field */}
-                <input ref={inputRef} type="text" value={value} onChange={onInputChange} />
+                <input ref={inputRef} type="text" value={value} onChange={onInputChange} /> 
                 { children }
+                <button type="submit">Search</button>
             </fieldset>
 
             <p>Searching for <em>{value}</em> | <b>{numResults || 'No'}</b> results</p>
-        </>
+        </form>
     )
 }
 

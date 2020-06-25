@@ -113,6 +113,8 @@ const App = () => {
 
     const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'Search all the things')
 
+    const [searchTerms, setSearchTerms] = React.useState(new Set([searchTerm]))
+
     /**
      * A callback handler to be used in the Search component but calls back here
      * @param {Event} event onChange event
@@ -216,6 +218,21 @@ const App = () => {
 
     const searchNum = searchGames.length;
 
+    const handleSearchSubmit = event => {
+        event.preventDefault()
+
+        if (!searchTerm) return
+
+        searchTerms.add(searchTerm)
+        setSearchTerms(searchTerms)
+    }
+
+    const lastSearches = [...searchTerms]
+
+    const handleLastSearch = searchTerm => {
+        setSearchTerm(searchTerm)
+    }
+
     return (
         <div className={styles.container}>
             <h1 className={styles.headlinePrimary}>My Things</h1>
@@ -224,9 +241,13 @@ const App = () => {
                 <button onClick={handleCount} style={{ fontWeight: 'bold' }}>Counter++</button>
             </StyledP>
 
-            <SearchForm id="search" value={searchTerm} onInputChange={handleSearch} numResults={searchNum} isFocused>
+            <SearchForm id="search" value={searchTerm} onInputChange={handleSearch} onSearchSubmit={handleSearchSubmit} numResults={searchNum} isFocused>
                 <SortField sortBy={sortBy} onSortBy={handleSort} />
             </SearchForm>
+
+            {lastSearches.map((searchTerm, index) => (
+                <button key={searchTerm + index} type="button" onClick={() => handleLastSearch(searchTerm)}>{searchTerm}</button>
+            ))}
 
             {games.isError && <p>Something went wrong</p>}
 
